@@ -1,0 +1,66 @@
+#######################################
+# Global / OS
+#######################################
+.DS_Store
+Thumbs.db
+
+#######################################
+# IDE / Editor
+#######################################
+.vscode/
+.idea/
+*.swp
+
+#######################################
+# Logs (all projects)
+#######################################
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+laravel.log
+*.log
+
+#######################################
+# Environment files (ALL projects)
+#######################################
+.env
+.env.*
+!.env.example
+
+#######################################
+# NodeJS (React + Node services)
+#######################################
+node_modules/
+dist/
+build/
+coverage/
+
+#######################################
+# Laravel / PHP
+#######################################
+/backend-laravel/vendor/
+/backend-laravel/storage/*.key
+/backend-laravel/storage/logs/
+/backend-laravel/storage/framework/cache/
+/backend-laravel/storage/framework/sessions/
+/backend-laravel/storage/framework/views/
+/backend-laravel/bootstrap/cache/
+/backend-laravel/.phpunit.result.cache
+
+#######################################
+# React (Vite)
+#######################################
+/frontend-react/node_modules/
+/frontend-react/dist/
+
+#######################################
+# Node Article Updater
+#######################################
+/node-article-updater/node_modules/
+/node-article-updater/.env
+
+#######################################
+# Temporary files
+#######################################
+*.tmp
+*.temp
