@@ -7,19 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     protected $fillable = [
-        'title',
         'slug',
+        'title',
         'content',
         'author',
         'published_date',
         'summary',
         'tags',
-        'ai_processed_at'
+        'ai_processed_at',
+        'source_url', // ✅ REQUIRED
     ];
 
     protected $casts = [
         'tags' => 'array',
-        'published_date' => 'date',
-        'ai_processed_at' => 'datetime'
+        'published_date' => 'datetime',
+        'ai_processed_at' => 'datetime',
     ];
 }

@@ -43,6 +43,20 @@ return [
             'transaction_mode' => 'DEFERRED',
         ],
 
+        'mysql_source' => [
+    'driver' => 'mysql',
+    'host' => env('MYSQL_HOST', '127.0.0.1'),
+    'port' => env('MYSQL_PORT', '3306'),
+    'database' => env('MYSQL_DATABASE'),
+    'username' => env('MYSQL_USERNAME'),
+    'password' => env('MYSQL_PASSWORD'),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    'strict' => true,
+],
+
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
