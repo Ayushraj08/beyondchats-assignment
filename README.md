@@ -1,24 +1,88 @@
-BeyondChats – Article Processing Platform (Assignment Submission)
+# BeyondChats – Article Processing Platform  
+**Assignment Submission**
 
-This repository contains a monolithic codebase implementing an end-to-end article processing platform using Laravel (Backend APIs), React (Frontend), and Node.js (Async AI Processor).
+## 📌 Overview
 
-The project demonstrates real-world system design involving CRUD APIs, asynchronous processing via webhooks, frontend state visualization, and clean separation of responsibilities across services.
+This repository contains a **monolithic codebase** implementing an **end-to-end article processing platform** built using **Laravel**, **React**, and **Node.js**.
 
-Note: Partial completion is intentional and aligned with assignment instructions.
+The system is designed to demonstrate **real-world backend–frontend interaction**, **asynchronous processing**, and **clean architectural separation** between responsibilities such as API handling, background processing, and UI state management.
 
-🔧 Tech Stack
+> **Note:** Partial completion is **intentional** and strictly aligned with the assignment instructions.
 
-Backend: Laravel (PHP 8+)
+---
 
-Frontend: React (Vite)
+## 🧠 System Design Summary
 
-Async Worker: Node.js
+The platform follows a **three-layer architecture**:
 
-Database: SQLite / MySQL (configurable)
+1. **Backend APIs (Laravel)**  
+   - Handles article CRUD operations  
+   - Manages job lifecycle and status  
+   - Exposes webhook endpoints  
 
-Communication: REST APIs + Webhooks
+2. **Async AI Processor (Node.js Worker)**  
+   - Simulates long-running article processing  
+   - Sends processing results back via webhooks  
 
-📁 Repository Structure (Monorepo)
+3. **Frontend (React + Vite)**  
+   - Displays articles and their processing status  
+   - Reflects real-time state changes clearly  
+
+This design mirrors **production-grade async systems** used in real applications.
+
+---
+
+## ⚙️ Tech Stack
+
+### Backend
+- **Laravel** (PHP 8+)
+- RESTful APIs
+- Webhook support
+
+### Frontend
+- **React** (Vite)
+- Modern component-based UI
+- API-driven state rendering
+
+### Async Processing
+- **Node.js**
+- Background worker pattern
+- Webhook-based communication
+
+### Database
+- **SQLite** (default)
+- **MySQL** (configurable)
+
+### Communication
+- REST APIs  
+- Webhooks for async callbacks  
+
+---
+
+## 🔁 Workflow Overview
+
+1. User submits an article from the frontend  
+2. Laravel API stores the article and marks it as **pending**  
+3. Node.js worker processes the article asynchronously  
+4. Worker sends results back via webhook  
+5. Backend updates article status  
+6. Frontend reflects updated processing state  
+
+---
+
+## 🧪 Key Concepts Demonstrated
+
+- RESTful API design  
+- Asynchronous background processing  
+- Webhook-based communication  
+- Clear separation of concerns  
+- Frontend state synchronization  
+- Scalable system thinking  
+
+---
+
+## 📂 Repository Structure (Mono-repo)
+```
 /
 ├── backend-laravel/        # Laravel API (articles, AI status, webhook receiver)
 ├── frontend-react/         # React frontend (article list & detail views)
@@ -27,167 +91,162 @@ Communication: REST APIs + Webhooks
 ├── architecture.png        # System architecture diagram
 ├── progress.md             # Development progress & notes
 └── README.md               # This file
+```
 
+## 🧩 Monolithic Repository Confirmation
 
-This structure satisfies the requirement of one monolithic Git repository containing all projects.
+This structure satisfies the requirement of a **single monolithic Git repository** containing all related projects (backend, frontend, and async worker) with clear separation of concerns.
 
-🧠 System Architecture & Data Flow
-High-level flow:
+---
 
-Articles are stored and served via Laravel APIs
+## 🧠 System Architecture & Data Flow
 
-Frontend fetches and displays articles
+### High-Level Flow
 
-An async Node.js service:
+1. Articles are stored and served via **Laravel REST APIs**
+2. The **React frontend** fetches and displays articles
+3. A **Node.js async service**:
+   - Fetches unprocessed articles
+   - Generates AI summaries and tags
+   - Sends results back via webhook
+4. **Laravel** receives webhook callbacks and updates article status
+5. The **frontend** visually reflects AI processing state in real time
 
-Fetches unprocessed articles
+### Architecture Diagram
 
-Generates AI summaries & tags
+Refer to `architecture.png` for a visual overview of system components and interactions.
 
-Sends results back via webhook
+---
 
-Laravel updates article status
+## 🚀 Live Demo
 
-Frontend reflects AI processing state visually
+### Frontend (Primary Evaluation Link)
 
-Architecture Diagram
-
-🚀 Live Demo
-
-Frontend (Primary Evaluation Link):
-👉 [LIVE FRONTEND URL HERE]
+👉 **[LIVE FRONTEND URL HERE]**
 
 The frontend allows reviewers to:
 
-View original articles
+- View original articles
+- View AI-processed summaries and tags
+- Filter AI-processed articles
+- Open individual article detail pages
 
-View AI-processed summaries & tags
+> Backend APIs are deployed and actively connected to the frontend.
 
-Filter AI-processed articles
+---
 
-Open article detail pages
+## ✅ Completed Features
 
-Backend APIs are deployed and connected to the frontend.
+### Backend (Laravel)
 
-✅ Completed Features
-Backend (Laravel)
+- Article CRUD APIs
+- AI enrichment fields:
+  - `summary`
+  - `tags`
+  - `ai_processed_at`
+- Webhook endpoint for async AI updates
+- Clean and consistent REST API design
 
-Article CRUD APIs
+### Frontend (React)
 
-AI enrichment fields:
+- Article list view
+- Article detail page
+- Search by title or content
+- Filter: AI-processed articles only
+- Visual AI processing status indicator
+- Polished UI/UX (spacing, typography, clarity)
 
-summary
+### Async Processing (Node.js)
 
-tags
+- Separate Node.js service
+- Fetches articles from Laravel APIs
+- Simulates AI processing workflow
+- Sends updates via webhook
+- Fully decoupled, interview-friendly architecture
 
-ai_processed_at
+---
 
-Webhook endpoint for async updates
+## ⏳ Partially Completed / Not Implemented (By Design)
 
-Clean REST API design
+The following **Phase 2 (Very Difficult)** requirements are **intentionally not fully implemented**:
 
-Frontend (React)
+- Google Search (SERP) scraping
+- Fetching top external reference articles
+- Scraping external article content
+- LLM-based rewriting using external sources
+- Republishing rewritten articles with citations
 
-Article list view
+These were consciously scoped out to prioritize **system design, async workflows, and code quality**, as partial implementation was explicitly permitted.
 
-Article detail page
+---
 
-Search by title/content
+## 🛠️ Local Setup Instructions
 
-Filter: AI-processed only
+### 1️⃣ Backend (Laravel)
 
-Visual AI status indicator
-
-Polished UI/UX (spacing, typography, clarity)
-
-Async Processing (Node.js)
-
-Separate Node.js project
-
-Fetches articles from Laravel API
-
-Simulates AI processing
-
-Sends updates via webhook
-
-Decoupled, interview-friendly architecture
-
-⏳ Partially Completed / Not Implemented (By Design)
-
-The following Phase 2 (Very Difficult) requirements are not fully implemented:
-
-Google Search scraping (SERP)
-
-Fetching top 2 external articles
-
-Scraping external article content
-
-LLM-based rewriting using external sources
-
-Republishing rewritten article with citations
-
-These were intentionally scoped out to focus on system design, async workflows, and code quality, as partial work was explicitly allowed.
-
-🛠️ Local Setup Instructions
-1️⃣ Backend (Laravel)
+```bash
 cd backend-laravel
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan serve
+```
 
-
-Backend runs at:
-
+**Backend runs at:**
+```
 http://127.0.0.1:8000
-
-2️⃣ Frontend (React)
+```
+### 2️⃣ Frontend (React)
+```
 cd frontend-react
 npm install
 npm run dev
+```
 
-
-Frontend runs at:
-
+**Frontend runs at:**
+```
 http://localhost:5173
+```
 
+**Ensure the API base URL points to the backend.**
 
-Ensure the API base URL points to the backend.
-
-3️⃣ Node.js Async Worker
+### 3️⃣ Node.js Async Worker
+```
 cd node-article-updater
 npm install
 npm start
+```
 
+**This starts the async AI webhook processor.**
 
-This starts the async AI webhook processor.
+## 📊 Evaluation Alignment
 
-📊 Evaluation Alignment
-Criterion	Status
-Completeness (>50%)	✅ Achieved
-README & Docs	✅ Included
-Live Link	✅ Frontend
-Code Quality	✅ Clean & modular
-Monolithic Repo	✅ Yes
-🧩 Why This Approach
+| Criterion           | Status              |
+|---------------------|---------------------|
+| Completeness (>50%) | ✅ Achieved          |
+| README & Docs       | ✅ Included          |
+| Live Link           | ✅ Frontend          |
+| Code Quality        | ✅ Clean & Modular   |
+| Monolithic Repo     | ✅ Yes               |
 
-Demonstrates real-world async processing
+---
 
-Clean separation of frontend, backend, and worker
+## 🧩 Why This Approach
 
-Scalable architecture
+- Demonstrates real-world asynchronous processing
+- Clean separation of frontend, backend, and worker services
+- Scalable and extensible system architecture
+- Honest scoping with strong engineering fundamentals
 
-Honest scoping with strong fundamentals
+This reflects how production systems are designed, even when full automation is delivered in phases.
 
-This reflects how production systems are designed, even when full automation is phased.
+---
 
-📬 Notes for Reviewers
+## 📬 Notes for Reviewers
 
-This project prioritizes architecture, data flow, and clarity
-
-Phase 2 is acknowledged and documented
-
-All core concepts required for extension are in place
+- This project prioritizes **architecture, data flow, and clarity**
+- Phase 2 requirements are **explicitly acknowledged and documented**
+- All core concepts required for future extension are already in place
 
 Thank you for reviewing this submission.
