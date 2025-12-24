@@ -115,39 +115,17 @@ This structure satisfies the requirement of a **single monolithic Git repository
 ### Architecture Diagram
 
 ```mermaid
-flowchart TB
-    subgraph Frontend["🖥️ React Frontend"]
-        UI1[Article List View]
-        UI2[Article Detail View]
-        UI3[AI Status Indicator]
-    end
+%%{init: {"flowchart": {"nodeSpacing": 20, "rankSpacing": 30}}}%%
+flowchart LR
+    FE[React UI]
+    API[Laravel API]
+    DB[(Articles)]
+    W[Node Worker]
 
-    subgraph Backend["🧩 Laravel Backend"]
-        API1[REST APIs]
-        API2[Article Storage]
-        API3[Webhook Receiver]
-    end
-
-    subgraph Worker["⚙️ Node.js Async Worker"]
-        W1[Fetch Pending Articles]
-        W2[AI Summarize]
-        W3[AI Tagging]
-        W4[Send Webhook Update]
-    end
-
-    UI1 -->|Fetch Articles| API1
-    UI2 -->|Fetch Article Details| API1
-    UI3 -->|Poll / Refresh Status| API1
-
-    API1 --> API2
-    API1 -->|Trigger AI Job| W1
-
-    W1 --> W2
-    W2 --> W3
-    W3 --> W4
-
-    W4 -->|Webhook Callback| API3
-    API3 -->|Update Article Status| API2
+    FE --> API
+    API --> DB
+    API -->|Trigger AI| W
+    W -->|Webhook Update| API
 ```
 
 **Architecture Image**
