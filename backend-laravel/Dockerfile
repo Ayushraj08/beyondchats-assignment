@@ -17,23 +17,20 @@ WORKDIR /var/www/html
 # Copy Laravel project
 COPY . .
 
-# 🔑 Override Apache default vhost
+# Copy Apache vhost and ENABLE it
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN a2ensite 000-default.conf
 
-# Create required Laravel directories
+# Ensure required Laravel directories exist
 RUN mkdir -p bootstrap/cache storage \
     && chmod -R 775 bootstrap/cache storage
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Fix permissions
+# Permissions
 RUN chown -R www-data:www-data /var/www/html
 
-# Expose Apache port
 EXPOSE 80
-
 CMD ["apache2-foreground"]
