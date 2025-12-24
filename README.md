@@ -114,8 +114,6 @@ This structure satisfies the requirement of a **single monolithic Git repository
 
 ### Architecture Diagram
 
-<img width="400" height="400" alt="architecture" src="https://github.com/user-attachments/assets/072e0f78-045b-40ac-9e2d-3e0677e3f6e8" />
-
 ```mermaid
 flowchart TB
     subgraph Frontend["🖥️ React Frontend"]
@@ -151,6 +149,10 @@ flowchart TB
     W4 -->|Webhook Callback| API3
     API3 -->|Update Article Status| API2
 ```
+
+**Architecture Image**
+
+<img width="400" height="500" alt="architecture" src="https://github.com/user-attachments/assets/072e0f78-045b-40ac-9e2d-3e0677e3f6e8" />
 
 ---
 
