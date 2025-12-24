@@ -17,17 +17,20 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
+# 🔑 CREATE REQUIRED DIRECTORIES BEFORE COMPOSER
+RUN mkdir -p bootstrap/cache storage \
+    && chmod -R 775 bootstrap/cache storage
+
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install Laravel dependencies
+# 🔑 RUN COMPOSER AFTER PERMISSIONS
 RUN composer install --no-dev --optimize-autoloader
 
-# Fix permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Fix ownership
+RUN chown -R www-data:www-data /var/www/html
 
 # Expose Apache port
 EXPOSE 80
 
-# Start Apache
 CMD ["apache2-foreground"]
