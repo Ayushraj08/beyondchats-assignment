@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http; // ✅ REQUIRED (ONLY CHANGE)
 
 class ArticleController extends Controller
 {
@@ -91,19 +92,24 @@ class ArticleController extends Controller
             'message' => 'Article enriched successfully'
         ]);
     }
+
+    /**
+     * POST /api/articles/{id}/trigger-ai
+     * Trigger AI enrichment webhook
+     */
     public function triggerEnrichment($id)
-{
-    $article = Article::findOrFail($id);
+    {
+        $article = Article::findOrFail($id);
 
-    Http::post('http://127.0.0.1:3001/webhook/article-created', [
-        'id' => $article->id,
-        'title' => $article->title,
-        'content' => $article->content,
-    ]);
+        Http::post('http://127.0.0.1:3001/webhook/article-created', [
+            'id' => $article->id,
+            'title' => $article->title,
+            'content' => $article->content,
+        ]);
 
-    return response()->json([
-        'status' => 'queued',
-        'message' => 'Article sent for AI processing'
-    ]);
-}
+        return response()->json([
+            'status' => 'queued',
+            'message' => 'Article sent for AI processing'
+        ]);
+    }
 }
