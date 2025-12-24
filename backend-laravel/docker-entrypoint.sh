@@ -14,8 +14,12 @@ fi
 echo "🗄️ Running migrations..."
 php artisan migrate --force
 
-echo "🔁 Migrating MySQL → SQLite..."
-php artisan migrate:mysql-to-sqlite || true
+if [ "$APP_ENV" != "production" ]; then
+  echo "🔁 Migrating MySQL → SQLite (local only)..."
+  php artisan migrate:mysql-to-sqlite || true
+else
+  echo "🚫 Skipping MySQL → SQLite migration in production"
+fi
 
 echo "🧹 Clearing cache..."
 php artisan optimize:clear
