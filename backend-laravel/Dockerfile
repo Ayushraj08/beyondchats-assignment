@@ -14,20 +14,23 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy project files
+# Copy Laravel project
 COPY . .
 
-# 🔑 CREATE REQUIRED DIRECTORIES BEFORE COMPOSER
+# 🔑 Override Apache default vhost
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Create required Laravel directories
 RUN mkdir -p bootstrap/cache storage \
     && chmod -R 775 bootstrap/cache storage
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# 🔑 RUN COMPOSER AFTER PERMISSIONS
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Fix ownership
+# Fix permissions
 RUN chown -R www-data:www-data /var/www/html
 
 # Expose Apache port
