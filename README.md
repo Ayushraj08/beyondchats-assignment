@@ -114,7 +114,8 @@ This structure satisfies the requirement of a **single monolithic Git repository
 
 ### Architecture Diagram
 
-Refer to `architecture.png` for a visual overview of system components and interactions.
+<img width="1024" height="1536" alt="architecture" src="https://github.com/user-attachments/assets/072e0f78-045b-40ac-9e2d-3e0677e3f6e8" />
+
 
 ---
 
