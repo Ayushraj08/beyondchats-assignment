@@ -32,7 +32,9 @@ COPY . .
 # Apache virtual host (points to /public)
 # --------------------------------------------------
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-RUN a2ensite 000-default.conf
+RUN a2ensite 000-default.conf \
+ && a2dissite 000-default.conf.default || true
+# ↑ (safe: prevents Apache default vhost conflicts)
 
 # --------------------------------------------------
 # Create REQUIRED Laravel runtime directories
@@ -59,7 +61,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # --------------------------------------------------
-# Clear Laravel caches
+# Clear Laravel caches (safe in Docker)
 # --------------------------------------------------
 RUN php artisan config:clear \
  && php artisan route:clear \
