@@ -7,14 +7,13 @@ RUN a2enmod rewrite
 
 # --------------------------------------------------
 # Install system dependencies + PHP extensions
-# (pdo_sqlite ADDED, pdo_mysql KEPT — no harm)
 # --------------------------------------------------
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
+    libsqlite3-dev \
     zip \
-    sqlite3 \
     && docker-php-ext-install zip pdo pdo_mysql pdo_sqlite \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -37,7 +36,6 @@ RUN a2ensite 000-default.conf
 
 # --------------------------------------------------
 # Create REQUIRED Laravel runtime directories
-# (CRITICAL for file sessions, cache, views, SQLITE)
 # --------------------------------------------------
 RUN mkdir -p \
     bootstrap/cache \
@@ -56,12 +54,12 @@ RUN mkdir -p \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # --------------------------------------------------
-# Install PHP dependencies (NO dev, NO env handling)
+# Install PHP dependencies
 # --------------------------------------------------
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # --------------------------------------------------
-# Clear Laravel caches (safe, does NOT require APP_KEY)
+# Clear Laravel caches
 # --------------------------------------------------
 RUN php artisan config:clear \
  && php artisan route:clear \
