@@ -14,6 +14,7 @@ fi
 echo "🗄️ Running migrations..."
 php artisan migrate --force
 
+# MySQL → SQLite migration ONLY for local/dev
 if [ "$APP_ENV" != "production" ]; then
   echo "🔁 Migrating MySQL → SQLite (local only)..."
   php artisan migrate:mysql-to-sqlite || true

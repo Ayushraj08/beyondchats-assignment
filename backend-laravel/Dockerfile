@@ -19,6 +19,12 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # --------------------------------------------------
+# Force SQLite in production (CRITICAL FIX)
+# --------------------------------------------------
+ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=/var/www/html/database/database.sqlite
+
+# --------------------------------------------------
 # Set working directory
 # --------------------------------------------------
 WORKDIR /var/www/html
@@ -34,7 +40,6 @@ COPY . .
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2ensite 000-default.conf \
  && a2dissite 000-default.conf.default || true
-# ↑ (safe: prevents Apache default vhost conflicts)
 
 # --------------------------------------------------
 # Create REQUIRED Laravel runtime directories
@@ -68,7 +73,14 @@ RUN php artisan config:clear \
  && php artisan view:clear || true
 
 # --------------------------------------------------
-# Expose port & start Apache
+# Use custom entrypoint
+# --------------------------------------------------
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# --------------------------------------------------
+# Expose port
 # --------------------------------------------------
 EXPOSE 80
-CMD ["apache2-foreground"]
