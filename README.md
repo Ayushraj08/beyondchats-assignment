@@ -1,5 +1,5 @@
 # BeyondChats – Article Processing Platform  
-**Assignment Submission**
+**Assignment Submission link: https://frontend-beyondchats-assignment.vercel.app/**
 
 ## 📌 Overview
 
@@ -138,7 +138,7 @@ flowchart LR
 
 ### Frontend (Primary Evaluation Link)
 
-👉 **[[LIVE FRONTEND URL HERE]](https://frontend-beyondchats-assignment.vercel.app/)**
+👉 **[[LIVE FRONTEND URL: CLICK HERE]](https://frontend-beyondchats-assignment.vercel.app/)**
 
 The frontend allows reviewers to:
 
