@@ -7,18 +7,41 @@ export default function ArticleList() {
   const [articles, setArticles] = useState([]);
   const [search, setSearch] = useState("");
   const [aiOnly, setAiOnly] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchArticles().then(setArticles);
+    const loadArticles = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchArticles();
+        setArticles(data || []);
+      } catch (err) {
+        console.error("Failed to load articles:", err);
+        setError("Failed to load articles");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadArticles();
   }, []);
+
+  if (loading) {
+    return <p className="loading">Loading articles...</p>;
+  }
+
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
 
   const filtered = articles
     .filter(
-      (a) =>
+      a =>
         a.title.toLowerCase().includes(search.toLowerCase()) ||
         a.content.toLowerCase().includes(search.toLowerCase())
     )
-    .filter((a) => (aiOnly ? a.summary : true));
+    .filter(a => (aiOnly ? a.summary : true));
 
   return (
     <div className="container">
@@ -29,22 +52,26 @@ export default function ArticleList() {
           className="search-input"
           placeholder="Search articles..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
         />
 
         <label className="checkbox">
           <input
             type="checkbox"
             checked={aiOnly}
-            onChange={(e) => setAiOnly(e.target.checked)}
+            onChange={e => setAiOnly(e.target.checked)}
           />
           AI processed only
         </label>
       </div>
 
-      {filtered.map((article) => (
-        <ArticleCard key={article.id} article={article} />
-      ))}
+      {filtered.length === 0 ? (
+        <p>No articles found.</p>
+      ) : (
+        filtered.map(article => (
+          <ArticleCard key={article.id} article={article} />
+        ))
+      )}
     </div>
   );
 }
