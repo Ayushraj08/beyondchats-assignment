@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 export default function ArticleCard({ article }) {
   const navigate = useNavigate();
 
-  // ✅ Normalize tags safely (string → array)
+  // 🔥 Normalize tags safely
   let tags = [];
+
   if (Array.isArray(article.tags)) {
     tags = article.tags;
   } else if (typeof article.tags === "string") {
@@ -35,11 +36,7 @@ export default function ArticleCard({ article }) {
           ))}
         </div>
 
-        <span
-          className={`status ${
-            article.summary ? "ai" : "pending"
-          }`}
-        >
+        <span className={`status ${article.summary ? "ai" : "pending"}`}>
           {article.summary ? "AI Enriched" : "Processing"}
         </span>
       </div>
