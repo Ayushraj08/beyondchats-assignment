@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { normalizeTags } from "../utils/tags.js";
+import { normalizeTags } from "@/utils/tags.js";
 
 export default function ArticleCard({ article }) {
   const tags = normalizeTags(article.tags);
