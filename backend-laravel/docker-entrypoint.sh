@@ -3,7 +3,9 @@ set -e
 
 echo "🚀 Starting Laravel container..."
 
-# Ensure SQLite file exists
+# --------------------------------------------------
+# Ensure SQLite database exists
+# --------------------------------------------------
 if [ ! -f database/database.sqlite ]; then
   echo "📦 Creating SQLite database file..."
   touch database/database.sqlite
@@ -11,10 +13,21 @@ if [ ! -f database/database.sqlite ]; then
   chmod 664 database/database.sqlite
 fi
 
+# --------------------------------------------------
+# Run migrations (ALWAYS)
+# --------------------------------------------------
 echo "🗄️ Running migrations..."
 php artisan migrate --force
 
-# MySQL → SQLite migration ONLY for local/dev
+# --------------------------------------------------
+# Seed database (PRODUCTION SAFE)
+# --------------------------------------------------
+echo "🌱 Seeding database..."
+php artisan db:seed --force
+
+# --------------------------------------------------
+# MySQL → SQLite migration (LOCAL ONLY)
+# --------------------------------------------------
 if [ "$APP_ENV" != "production" ]; then
   echo "🔁 Migrating MySQL → SQLite (local only)..."
   php artisan migrate:mysql-to-sqlite || true
@@ -22,8 +35,14 @@ else
   echo "🚫 Skipping MySQL → SQLite migration in production"
 fi
 
+# --------------------------------------------------
+# Clear & optimize cache
+# --------------------------------------------------
 echo "🧹 Clearing cache..."
 php artisan optimize:clear
 
+# --------------------------------------------------
+# Start Apache
+# --------------------------------------------------
 echo "🌐 Starting Apache..."
 exec apache2-foreground
