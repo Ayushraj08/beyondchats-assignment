@@ -13,9 +13,8 @@ export default function ArticleList() {
   useEffect(() => {
     const loadArticles = async () => {
       try {
-        setLoading(true);
         const data = await fetchArticles();
-        setArticles(data || []);
+        setArticles(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Failed to load articles:", err);
         setError("Failed to load articles");
@@ -27,21 +26,19 @@ export default function ArticleList() {
     loadArticles();
   }, []);
 
-  if (loading) {
-    return <p className="loading">Loading articles...</p>;
-  }
-
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
+  if (loading) return <p className="loading">Loading articles...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   const filtered = articles
-    .filter(
-      a =>
-        a.title.toLowerCase().includes(search.toLowerCase()) ||
-        a.content.toLowerCase().includes(search.toLowerCase())
-    )
-    .filter(a => (aiOnly ? a.summary : true));
+    .filter(a => {
+      const title = a?.title ?? "";
+      const content = a?.content ?? "";
+      return (
+        title.toLowerCase().includes(search.toLowerCase()) ||
+        content.toLowerCase().includes(search.toLowerCase())
+      );
+    })
+    .filter(a => (aiOnly ? Boolean(a.summary) : true));
 
   return (
     <div className="container">
