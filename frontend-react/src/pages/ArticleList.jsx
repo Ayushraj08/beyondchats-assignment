@@ -7,17 +7,40 @@ export default function ArticleList() {
   const [articles, setArticles] = useState([]);
   const [search, setSearch] = useState("");
   const [aiOnly, setAiOnly] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchArticles().then(setArticles);
+    fetchArticles()
+      .then(data => {
+        setArticles(data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch articles:", err);
+        setError("Failed to load articles");
+        setLoading(false);
+      });
   }, []);
 
   const filtered = articles
-    .filter(a =>
-      a.title.toLowerCase().includes(search.toLowerCase()) ||
-      a.content.toLowerCase().includes(search.toLowerCase())
-    )
-    .filter(a => (aiOnly ? a.summary : true));
+    .filter(a => {
+      const title = a.title || "";
+      const content = a.content || "";
+      return (
+        title.toLowerCase().includes(search.toLowerCase()) ||
+        content.toLowerCase().includes(search.toLowerCase())
+      );
+    })
+    .filter(a => (aiOnly ? Boolean(a.summary) : true));
+
+  if (loading) {
+    return <p className="loading">Loading articles...</p>;
+  }
+
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
 
   return (
     <div className="container">
@@ -41,9 +64,13 @@ export default function ArticleList() {
         </label>
       </div>
 
-      {filtered.map(article => (
-        <ArticleCard key={article.id} article={article} />
-      ))}
+      {filtered.length === 0 ? (
+        <p className="empty">No articles found.</p>
+      ) : (
+        filtered.map(article => (
+          <ArticleCard key={article.id} article={article} />
+        ))
+      )}
     </div>
   );
 }
