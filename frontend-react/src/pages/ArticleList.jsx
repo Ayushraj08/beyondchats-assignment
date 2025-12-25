@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { fetchArticles } from "@/api/articles.js";
 import ArticleCard from "@/components/ArticleCard.jsx";
-import SkeletonCard from "@/components/SkeletonCard.jsx";
 
 export default function ArticleList() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
-  const [aiOnly, setAiOnly] = useState(false);
 
   useEffect(() => {
     fetchArticles()
@@ -17,57 +14,32 @@ export default function ArticleList() {
       .finally(() => setLoading(false));
   }, []);
 
-  const filtered = articles.filter(article => {
-    const matchesQuery =
-      article.title.toLowerCase().includes(query.toLowerCase()) ||
-      article.content.toLowerCase().includes(query.toLowerCase());
-
-    const matchesAI = aiOnly ? article.ai_processed_at : true;
-
-    return matchesQuery && matchesAI;
-  });
-
   return (
-    <div>
+    <div className="app-container">
       <h1 className="page-title">
         BeyondChats <span>Articles</span>
       </h1>
 
-      {/* 🔍 Search + Toggle */}
-      <div className="controls">
+      <div className="toolbar">
         <input
-          className="search"
+          className="search-input"
           placeholder="Search articles..."
-          value={query}
-          onChange={e => setQuery(e.target.value)}
         />
 
-        <label className="toggle">
-          <input
-            type="checkbox"
-            checked={aiOnly}
-            onChange={() => setAiOnly(!aiOnly)}
-          />
+        <label className="checkbox">
+          <input type="checkbox" />
           AI processed only
         </label>
       </div>
 
-      {/* 💀 Skeleton loaders */}
-      {loading && (
-        <>
-          {Array.from({ length: 4 }).map((_, i) => (
-            <SkeletonCard key={i} />
-          ))}
-        </>
-      )}
+      {loading && <p className="loading">Loading articles…</p>}
+      {error && <p>{error}</p>}
 
-      {error && <p>Error: {error}</p>}
-      {!loading && !filtered.length && <p>No articles found.</p>}
-
-      {!loading &&
-        filtered.map(article => (
+      <div className="article-list">
+        {articles.map(article => (
           <ArticleCard key={article.id} article={article} />
         ))}
+      </div>
     </div>
   );
 }

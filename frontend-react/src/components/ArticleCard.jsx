@@ -1,39 +1,33 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { normalizeTags } from "@/utils/tags.js";
 
 export default function ArticleCard({ article }) {
   const tags = normalizeTags(article.tags);
+  const isAI = Boolean(article.ai_processed_at);
 
   return (
-    <motion.div
-      className="article-card"
-      whileHover={{ y: -4 }}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
-    >
-      <h2>{article.title}</h2>
+    <div className="article-card">
+      <h2 className="article-title">{article.title}</h2>
 
-      <p className="summary">
-        {article.summary || article.content?.slice(0, 140) + "..."}
+      <p className="article-summary">
+        {article.summary || article.content?.slice(0, 120) + "..."}
       </p>
 
       <div className="tags">
         {tags.map((tag, i) => (
-          <span key={i} className="tag">#{tag}</span>
+          <span key={i} className="tag">
+            #{tag}
+          </span>
         ))}
       </div>
 
-      <div className="card-footer">
-        <Link to={`/article/${article.slug}`} className="read-more">
+      <div className="article-footer">
+        <Link className="read-more" to={`/article/${article.slug}`}>
           Read More →
         </Link>
 
-        {article.ai_processed_at && (
-          <span className="badge">AI Enriched</span>
-        )}
+        {isAI && <span className="status ai">AI Enriched</span>}
       </div>
-    </motion.div>
+    </div>
   );
 }
