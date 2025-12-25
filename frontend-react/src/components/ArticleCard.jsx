@@ -3,6 +3,18 @@ import { useNavigate } from "react-router-dom";
 export default function ArticleCard({ article }) {
   const navigate = useNavigate();
 
+  // ✅ Normalize tags safely (string → array)
+  let tags = [];
+  if (Array.isArray(article.tags)) {
+    tags = article.tags;
+  } else if (typeof article.tags === "string") {
+    try {
+      tags = JSON.parse(article.tags);
+    } catch {
+      tags = [];
+    }
+  }
+
   return (
     <div
       className="article-card"
@@ -13,12 +25,12 @@ export default function ArticleCard({ article }) {
       <p className="article-summary">
         {article.summary
           ? article.summary
-          : article.content.slice(0, 160) + "..."}
+          : article.content?.slice(0, 160) + "..."}
       </p>
 
       <div className="article-footer">
         <div className="tags">
-          {article.tags?.map((tag, i) => (
+          {tags.map((tag, i) => (
             <span key={i} className="tag">#{tag}</span>
           ))}
         </div>
