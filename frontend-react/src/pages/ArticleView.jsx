@@ -1,32 +1,32 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchArticleBySlug } from "../api/articles";
-import "../styles/article.css";
+import { normalizeTags } from "../utils/tags";
 
 export default function ArticleView() {
   const { slug } = useParams();
   const [article, setArticle] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchArticleBySlug(slug).then(setArticle);
+    fetchArticleBySlug(slug)
+      .then(setArticle)
+      .catch(err => setError(err.message));
   }, [slug]);
 
-  if (!article) return <p className="loading">Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!article) return <p>Loading...</p>;
+
+  const tags = normalizeTags(article.tags);
 
   return (
-    <div className="container">
-      <h1 className="article-title">{article.title}</h1>
+    <div className="article-view">
+      <h1>{article.title}</h1>
+      <p>{article.content}</p>
 
-      {article.summary && (
-        <div className="ai-summary">
-          <strong>AI Summary</strong>
-          <p>{article.summary}</p>
-        </div>
-      )}
-
-      <div className="article-content">
-        {article.content.split("\n").map((p, i) => (
-          <p key={i}>{p}</p>
+      <div className="tags">
+        {tags.map((tag, i) => (
+          <span key={i}>{tag}</span>
         ))}
       </div>
     </div>

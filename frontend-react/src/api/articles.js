@@ -1,37 +1,26 @@
-import axios from "axios";
+const API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  "https://beyondchats-assignment-0hcb.onrender.com/api";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+async function request(path, options = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    headers: { "Content-Type": "application/json" },
+    ...options,
+  });
 
-export const fetchArticles = async () => {
-  const res = await axios.get(`${API_BASE}/articles`);
-
-  if (!res.data || !Array.isArray(res.data.data)) {
-    console.error("Unexpected API response:", res.data);
-    return [];
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "API Error");
   }
 
-  // 🔥 Normalize tags here (KEY FIX)
-  return res.data.data.map(article => ({
-    ...article,
-    tags:
-      typeof article.tags === "string"
-        ? JSON.parse(article.tags)
-        : Array.isArray(article.tags)
-        ? article.tags
-        : [],
-  }));
-};
+  return res.json();
+}
 
-export const fetchArticleBySlug = async (slug) => {
-  const res = await axios.get(`${API_BASE}/articles/${slug}`);
+export async function fetchArticles() {
+  const res = await request("/articles");
+  return Array.isArray(res?.data) ? res.data : [];
+}
 
-  return {
-    ...res.data,
-    tags:
-      typeof res.data.tags === "string"
-        ? JSON.parse(res.data.tags)
-        : Array.isArray(res.data.tags)
-        ? res.data.tags
-        : [],
-  };
-};
+export async function fetchArticleBySlug(slug) {
+  return request(`/articles/${slug}`);
+}

@@ -1,34 +1,23 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { normalizeTags } from "../utils/tags";
 
 export default function ArticleCard({ article }) {
-  const navigate = useNavigate();
-
-  const tags = Array.isArray(article.tags) ? article.tags : [];
+  const tags = normalizeTags(article.tags);
 
   return (
-    <div
-      className="article-card"
-      onClick={() => navigate(`/article/${article.slug}`)}
-    >
-      <h3 className="article-title">{article.title}</h3>
+    <div className="article-card">
+      <h2>{article.title}</h2>
+      <p>{article.summary || article.content?.slice(0, 120) + "..."}</p>
 
-      <p className="article-summary">
-        {article.summary
-          ? article.summary
-          : article.content?.slice(0, 160) + "..."}
-      </p>
-
-      <div className="article-footer">
-        <div className="tags">
-          {tags.map((tag, i) => (
-            <span key={i} className="tag">#{tag}</span>
-          ))}
-        </div>
-
-        <span className={`status ${article.summary ? "ai" : "pending"}`}>
-          {article.summary ? "AI Enriched" : "Processing"}
-        </span>
+      <div className="tags">
+        {tags.map((tag, i) => (
+          <span key={i} className="tag">
+            {tag}
+          </span>
+        ))}
       </div>
+
+      <Link to={`/article/${article.slug}`}>Read More →</Link>
     </div>
   );
 }
