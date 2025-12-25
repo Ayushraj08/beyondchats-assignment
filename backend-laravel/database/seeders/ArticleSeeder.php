@@ -14,6 +14,7 @@ class ArticleSeeder extends Seeder
             [
                 'title' => 'Chatbots Magic: Beginner’s Guidebook',
                 'slug' => 'chatbots-magic-beginners-guidebook',
+                'source_url' => 'https://beyondchats.com/blog/chatbots-magic-beginners-guidebook',
                 'content' => <<<TEXT
 In the fast-paced world of technology, the buzz around “Chatbots” is louder than ever! Whether it’s for customer service or your virtual helper, these cool digital buddies have become an essential part of our online world...
 
@@ -30,6 +31,7 @@ TEXT,
             [
                 'title' => '7 ways a Live Chatbot transforms customer interaction',
                 'slug' => '7-ways-a-live-chatbot-transforms-customer-interaction',
+                'source_url' => 'https://beyondchats.com/blog/live-chatbot-transforms-customer-interaction',
                 'content' => <<<TEXT
 In today’s fast-paced digital era, businesses are continually seeking innovative ways to enhance customer interaction and satisfaction...
 
@@ -46,6 +48,7 @@ TEXT,
             [
                 'title' => '7 Clear Indicators Your Business Needs a Virtual Assistant',
                 'slug' => '7-clear-indicators-your-business-needs-a-virtual-assistant',
+                'source_url' => 'https://beyondchats.com/blog/virtual-assistant-business-indicators',
                 'content' => <<<TEXT
 Does your business have ambitious goals for the year, aiming to boost revenue and secure success?
 
@@ -62,6 +65,7 @@ TEXT,
             [
                 'title' => '10X Your Leads: How Chatbots Revolutionize Lead Generation',
                 'slug' => '10x-your-leads-how-chatbots-revolutionize-lead-generation',
+                'source_url' => 'https://beyondchats.com/blog/chatbots-revolutionize-lead-generation',
                 'content' => <<<TEXT
 In the fast-paced digital landscape, where the success of businesses relies heavily on effective online presence...
 
@@ -78,6 +82,7 @@ TEXT,
             [
                 'title' => 'Can Chatbots Boost Small Business Growth?',
                 'slug' => 'can-chatbots-boost-small-business-growth',
+                'source_url' => 'https://beyondchats.com/blog/chatbots-boost-small-business-growth',
                 'content' => <<<TEXT
 Hey there, small business hero! Feeling the weight of handling everything solo?
 
