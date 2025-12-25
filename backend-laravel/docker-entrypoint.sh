@@ -9,20 +9,36 @@ echo "🚀 Starting Laravel container..."
 cd /var/www/html
 
 # --------------------------------------------------
-# Ensure SQLite database exists (SAFE)
+# Fix permissions (Render-safe)
 # --------------------------------------------------
-if [ ! -f database/database.sqlite ]; then
-  echo "📦 Creating SQLite database file..."
-  touch database/database.sqlite
+echo "🔐 Fixing permissions..."
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+
+# --------------------------------------------------
+# Wait for database (PostgreSQL – Render)
+# --------------------------------------------------
+if [ "$DB_CONNECTION" = "pgsql" ]; then
+  echo "⏳ Waiting for PostgreSQL to be ready..."
+  until php -r "
+    try {
+      new PDO(
+        'pgsql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_DATABASE'),
+        getenv('DB_USERNAME'),
+        getenv('DB_PASSWORD')
+      );
+    } catch (Exception \$e) {
+      exit(1);
+    }
+  "; do
+    sleep 2
+    echo '⏳ PostgreSQL not ready yet...'
+  done
+  echo "✅ PostgreSQL is ready!"
 fi
 
-# Always fix permissions (Render resets filesystem)
-chown -R www-data:www-data database storage bootstrap/cache
-chmod -R 775 database storage bootstrap/cache
-chmod 664 database/database.sqlite
-
 # --------------------------------------------------
-# Run migrations (SAFE to re-run)
+# Run migrations (SAFE in production)
 # --------------------------------------------------
 echo "🗄️ Running migrations..."
 php artisan migrate --force || {
@@ -31,27 +47,15 @@ php artisan migrate --force || {
 }
 
 # --------------------------------------------------
-# Seed database (IDEMPOTENT & PRODUCTION SAFE)
+# Seed database (SAFE: relies on idempotent seeders)
 # --------------------------------------------------
-if php artisan migrate:status >/dev/null 2>&1; then
-  echo "🌱 Seeding database..."
-  php artisan db:seed --force || {
-    echo "⚠️ Seeder failed (continuing safely)"
-  }
-fi
+echo "🌱 Seeding database..."
+php artisan db:seed --force || {
+  echo "⚠️ Seeder failed (continuing safely)"
+}
 
 # --------------------------------------------------
-# MySQL → SQLite migration (LOCAL ONLY)
-# --------------------------------------------------
-if [ "$APP_ENV" != "production" ]; then
-  echo "🔁 Migrating MySQL → SQLite (local only)..."
-  php artisan migrate:mysql-to-sqlite || true
-else
-  echo "🚫 Skipping MySQL → SQLite migration in production"
-fi
-
-# --------------------------------------------------
-# Clear & optimize cache (SAFE)
+# Clear & optimize cache
 # --------------------------------------------------
 echo "🧹 Clearing cache..."
 php artisan optimize:clear || true

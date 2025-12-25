@@ -12,17 +12,11 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
-    libsqlite3-dev \
+    libpq-dev \
     zip \
-    && docker-php-ext-install zip pdo pdo_mysql pdo_sqlite \
+    && docker-php-ext-install zip pdo pdo_mysql pdo_pgsql \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# --------------------------------------------------
-# Force SQLite in production (CRITICAL FIX)
-# --------------------------------------------------
-ENV DB_CONNECTION=sqlite
-ENV DB_DATABASE=/var/www/html/database/database.sqlite
 
 # --------------------------------------------------
 # Set working directory
@@ -43,6 +37,7 @@ RUN a2ensite 000-default.conf \
 
 # --------------------------------------------------
 # Create REQUIRED Laravel runtime directories
+# (NO SQLite – PostgreSQL does not use DB files)
 # --------------------------------------------------
 RUN mkdir -p \
     bootstrap/cache \
@@ -50,10 +45,8 @@ RUN mkdir -p \
     storage/framework/sessions \
     storage/framework/views \
     storage/logs \
-    database \
-    && touch database/database.sqlite \
-    && chmod -R 775 bootstrap/cache storage database \
-    && chown -R www-data:www-data bootstrap/cache storage database
+    && chmod -R 775 bootstrap/cache storage \
+    && chown -R www-data:www-data bootstrap/cache storage
 
 # --------------------------------------------------
 # Install Composer

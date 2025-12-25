@@ -4,17 +4,13 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Article;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class ArticleSeeder extends Seeder
 {
     public function run(): void
     {
-        // ✅ Prevent duplicate inserts on redeploy
-        DB::table('articles')->truncate();
-
-        Article::insert([
+        $articles = [
             [
                 'title' => 'Chatbots Magic: Beginner’s Guidebook',
                 'slug' => 'chatbots-magic-beginners-guidebook',
@@ -95,6 +91,13 @@ TEXT,
                 'created_at' => Carbon::parse('2025-12-24 22:53:44'),
                 'updated_at' => Carbon::parse('2025-12-24 22:53:44'),
             ],
-        ]);
+        ];
+
+        foreach ($articles as $article) {
+            Article::updateOrCreate(
+                ['slug' => $article['slug']],
+                $article
+            );
+        }
     }
 }
