@@ -10,18 +10,12 @@ export const fetchArticles = async () => {
     return [];
   }
 
-  // ✅ Normalize tags here once
+  // 🔥 Normalize tags here (KEY FIX)
   return res.data.data.map(article => ({
     ...article,
     tags:
       typeof article.tags === "string"
-        ? (() => {
-            try {
-              return JSON.parse(article.tags);
-            } catch {
-              return [];
-            }
-          })()
+        ? JSON.parse(article.tags)
         : Array.isArray(article.tags)
         ? article.tags
         : [],
@@ -31,21 +25,13 @@ export const fetchArticles = async () => {
 export const fetchArticleBySlug = async (slug) => {
   const res = await axios.get(`${API_BASE}/articles/${slug}`);
 
-  const article = res.data;
-
   return {
-    ...article,
+    ...res.data,
     tags:
-      typeof article.tags === "string"
-        ? (() => {
-            try {
-              return JSON.parse(article.tags);
-            } catch {
-              return [];
-            }
-          })()
-        : Array.isArray(article.tags)
-        ? article.tags
+      typeof res.data.tags === "string"
+        ? JSON.parse(res.data.tags)
+        : Array.isArray(res.data.tags)
+        ? res.data.tags
         : [],
   };
 };
