@@ -138,7 +138,7 @@ flowchart LR
 
 ### Frontend (Primary Evaluation Link)
 
-👉 **[LIVE FRONTEND URL HERE]**
+👉 **[[LIVE FRONTEND URL HERE]](https://frontend-beyondchats-assignment.vercel.app/)**
 
 The frontend allows reviewers to:
 
