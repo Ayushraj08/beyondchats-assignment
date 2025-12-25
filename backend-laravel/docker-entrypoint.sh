@@ -4,26 +4,41 @@ set -e
 echo "🚀 Starting Laravel container..."
 
 # --------------------------------------------------
-# Ensure SQLite database exists
+# Ensure correct working directory
+# --------------------------------------------------
+cd /var/www/html
+
+# --------------------------------------------------
+# Ensure SQLite database exists (SAFE)
 # --------------------------------------------------
 if [ ! -f database/database.sqlite ]; then
   echo "📦 Creating SQLite database file..."
   touch database/database.sqlite
-  chown www-data:www-data database/database.sqlite
-  chmod 664 database/database.sqlite
 fi
 
-# --------------------------------------------------
-# Run migrations (ALWAYS)
-# --------------------------------------------------
-echo "🗄️ Running migrations..."
-php artisan migrate --force
+# Always fix permissions (Render resets filesystem)
+chown -R www-data:www-data database storage bootstrap/cache
+chmod -R 775 database storage bootstrap/cache
+chmod 664 database/database.sqlite
 
 # --------------------------------------------------
-# Seed database (PRODUCTION SAFE)
+# Run migrations (SAFE to re-run)
 # --------------------------------------------------
-echo "🌱 Seeding database..."
-php artisan db:seed --force
+echo "🗄️ Running migrations..."
+php artisan migrate --force || {
+  echo "❌ Migration failed"
+  exit 1
+}
+
+# --------------------------------------------------
+# Seed database (IDEMPOTENT & PRODUCTION SAFE)
+# --------------------------------------------------
+if php artisan migrate:status >/dev/null 2>&1; then
+  echo "🌱 Seeding database..."
+  php artisan db:seed --force || {
+    echo "⚠️ Seeder failed (continuing safely)"
+  }
+fi
 
 # --------------------------------------------------
 # MySQL → SQLite migration (LOCAL ONLY)
@@ -36,10 +51,10 @@ else
 fi
 
 # --------------------------------------------------
-# Clear & optimize cache
+# Clear & optimize cache (SAFE)
 # --------------------------------------------------
 echo "🧹 Clearing cache..."
-php artisan optimize:clear
+php artisan optimize:clear || true
 
 # --------------------------------------------------
 # Start Apache

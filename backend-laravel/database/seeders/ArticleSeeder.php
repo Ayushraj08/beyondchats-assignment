@@ -4,15 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Article;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class ArticleSeeder extends Seeder
 {
     public function run(): void
     {
+        // ✅ Prevent duplicate inserts on redeploy
+        DB::table('articles')->truncate();
+
         Article::insert([
             [
-                'id' => 1,
                 'title' => 'Chatbots Magic: Beginner’s Guidebook',
                 'slug' => 'chatbots-magic-beginners-guidebook',
                 'content' => <<<TEXT
@@ -20,16 +23,15 @@ In the fast-paced world of technology, the buzz around “Chatbots” is louder 
 
 (Full content preserved exactly as provided)
 TEXT,
-                'author' => '',
-                'published_date' => Carbon::parse('2025-12-24T23:53:57.708507Z'),
+                'author' => null,
                 'summary' => 'In the fast-paced world of technology, the buzz around “Chatbots” is louder than ever!',
                 'tags' => json_encode(['chatbot', 'ai', 'customer-support']),
-                'ai_processed_at' => Carbon::parse('2025-12-23T20:57:00'),
-                'created_at' => Carbon::parse('2025-12-24T22:53:43'),
-                'updated_at' => Carbon::parse('2025-12-24T22:53:43'),
+                'published_date' => Carbon::parse('2025-12-24 23:53:57'),
+                'ai_processed_at' => Carbon::parse('2025-12-23 20:57:00'),
+                'created_at' => Carbon::parse('2025-12-24 22:53:43'),
+                'updated_at' => Carbon::parse('2025-12-24 22:53:43'),
             ],
             [
-                'id' => 2,
                 'title' => '7 ways a Live Chatbot transforms customer interaction',
                 'slug' => '7-ways-a-live-chatbot-transforms-customer-interaction',
                 'content' => <<<TEXT
@@ -37,16 +39,15 @@ In today’s fast-paced digital era, businesses are continually seeking innovati
 
 (Full content preserved exactly as provided)
 TEXT,
-                'author' => '',
-                'published_date' => Carbon::parse('2025-12-24T23:53:57.709997Z'),
+                'author' => null,
                 'summary' => 'Businesses are seeking innovative ways to enhance customer interaction and satisfaction.',
                 'tags' => json_encode(['chatbot', 'ai', 'customer-support']),
-                'ai_processed_at' => Carbon::parse('2025-12-23T20:57:00'),
-                'created_at' => Carbon::parse('2025-12-24T22:53:44'),
-                'updated_at' => Carbon::parse('2025-12-24T22:53:44'),
+                'published_date' => Carbon::parse('2025-12-24 23:53:57'),
+                'ai_processed_at' => Carbon::parse('2025-12-23 20:57:00'),
+                'created_at' => Carbon::parse('2025-12-24 22:53:44'),
+                'updated_at' => Carbon::parse('2025-12-24 22:53:44'),
             ],
             [
-                'id' => 3,
                 'title' => '7 Clear Indicators Your Business Needs a Virtual Assistant',
                 'slug' => '7-clear-indicators-your-business-needs-a-virtual-assistant',
                 'content' => <<<TEXT
@@ -54,16 +55,15 @@ Does your business have ambitious goals for the year, aiming to boost revenue an
 
 (Full content preserved exactly as provided)
 TEXT,
-                'author' => '',
-                'published_date' => Carbon::parse('2025-12-24T23:53:57.710764Z'),
+                'author' => null,
                 'summary' => 'Recognize the signs that indicate your business needs a Virtual Assistant.',
                 'tags' => json_encode(['chatbot', 'ai', 'customer-support']),
-                'ai_processed_at' => Carbon::parse('2025-12-23T20:57:01'),
-                'created_at' => Carbon::parse('2025-12-24T22:53:44'),
-                'updated_at' => Carbon::parse('2025-12-24T22:53:44'),
+                'published_date' => Carbon::parse('2025-12-24 23:53:57'),
+                'ai_processed_at' => Carbon::parse('2025-12-23 20:57:01'),
+                'created_at' => Carbon::parse('2025-12-24 22:53:44'),
+                'updated_at' => Carbon::parse('2025-12-24 22:53:44'),
             ],
             [
-                'id' => 4,
                 'title' => '10X Your Leads: How Chatbots Revolutionize Lead Generation',
                 'slug' => '10x-your-leads-how-chatbots-revolutionize-lead-generation',
                 'content' => <<<TEXT
@@ -71,16 +71,15 @@ In the fast-paced digital landscape, where the success of businesses relies heav
 
 (Full content preserved exactly as provided)
 TEXT,
-                'author' => '',
-                'published_date' => Carbon::parse('2025-12-24T23:53:57.711331Z'),
+                'author' => null,
                 'summary' => 'Chatbots are revolutionizing lead generation strategies for businesses.',
                 'tags' => json_encode(['chatbot', 'ai', 'customer-support']),
-                'ai_processed_at' => Carbon::parse('2025-12-23T20:57:01'),
-                'created_at' => Carbon::parse('2025-12-24T22:53:44'),
-                'updated_at' => Carbon::parse('2025-12-24T22:53:44'),
+                'published_date' => Carbon::parse('2025-12-24 23:53:57'),
+                'ai_processed_at' => Carbon::parse('2025-12-23 20:57:01'),
+                'created_at' => Carbon::parse('2025-12-24 22:53:44'),
+                'updated_at' => Carbon::parse('2025-12-24 22:53:44'),
             ],
             [
-                'id' => 5,
                 'title' => 'Can Chatbots Boost Small Business Growth?',
                 'slug' => 'can-chatbots-boost-small-business-growth',
                 'content' => <<<TEXT
@@ -88,13 +87,13 @@ Hey there, small business hero! Feeling the weight of handling everything solo?
 
 (Full content preserved exactly as provided)
 TEXT,
-                'author' => '',
-                'published_date' => Carbon::parse('2025-12-24T23:53:57.711932Z'),
+                'author' => null,
                 'summary' => 'How chatbots help small businesses scale, save costs, and grow.',
                 'tags' => json_encode(['chatbot', 'ai', 'customer-support']),
-                'ai_processed_at' => Carbon::parse('2025-12-23T20:57:01'),
-                'created_at' => Carbon::parse('2025-12-24T22:53:44'),
-                'updated_at' => Carbon::parse('2025-12-24T22:53:44'),
+                'published_date' => Carbon::parse('2025-12-24 23:53:57'),
+                'ai_processed_at' => Carbon::parse('2025-12-23 20:57:01'),
+                'created_at' => Carbon::parse('2025-12-24 22:53:44'),
+                'updated_at' => Carbon::parse('2025-12-24 22:53:44'),
             ],
         ]);
     }

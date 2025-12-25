@@ -17,13 +17,14 @@ class DatabaseSeeder extends Seeder
     {
         /*
         |--------------------------------------------------------------------------
-        | Default Test User (kept as-is)
+        | Default Test User (idempotent & SQLite-safe)
         |--------------------------------------------------------------------------
+        | Prevents duplicate user creation on redeploy
         */
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            ['name' => 'Test User']
+        );
 
         /*
         |--------------------------------------------------------------------------
