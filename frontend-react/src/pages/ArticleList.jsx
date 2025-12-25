@@ -11,34 +11,30 @@ export default function ArticleList() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const loadArticles = async () => {
+    const load = async () => {
       try {
         const data = await fetchArticles();
-        setArticles(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Failed to load articles:", err);
+        setArticles(data);
+      } catch (e) {
+        console.error(e);
         setError("Failed to load articles");
       } finally {
         setLoading(false);
       }
     };
 
-    loadArticles();
+    load();
   }, []);
 
   if (loading) return <p className="loading">Loading articles...</p>;
   if (error) return <p className="error">{error}</p>;
 
   const filtered = articles
-    .filter(a => {
-      const title = a?.title ?? "";
-      const content = a?.content ?? "";
-      return (
-        title.toLowerCase().includes(search.toLowerCase()) ||
-        content.toLowerCase().includes(search.toLowerCase())
-      );
-    })
-    .filter(a => (aiOnly ? Boolean(a.summary) : true));
+    .filter(a =>
+      a.title?.toLowerCase().includes(search.toLowerCase()) ||
+      a.content?.toLowerCase().includes(search.toLowerCase())
+    )
+    .filter(a => (aiOnly ? !!a.summary : true));
 
   return (
     <div className="container">
