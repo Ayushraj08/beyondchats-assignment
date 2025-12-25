@@ -1,76 +1,49 @@
-import { useEffect, useState } from "react";
-import { fetchArticles } from "../api/articles";
-import ArticleCard from "../components/ArticleCard";
-import "../styles/article.css";
+  import { useEffect, useState } from "react";
+  import { fetchArticles } from "../api/articles";
+  import ArticleCard from "../components/ArticleCard";
+  import "../styles/article.css";
 
-export default function ArticleList() {
-  const [articles, setArticles] = useState([]);
-  const [search, setSearch] = useState("");
-  const [aiOnly, setAiOnly] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  export default function ArticleList() {
+    const [articles, setArticles] = useState([]);
+    const [search, setSearch] = useState("");
+    const [aiOnly, setAiOnly] = useState(false);
 
-  useEffect(() => {
-    fetchArticles()
-      .then(data => {
-        setArticles(data || []);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch articles:", err);
-        setError("Failed to load articles");
-        setLoading(false);
-      });
-  }, []);
+    useEffect(() => {
+      fetchArticles().then(setArticles);
+    }, []);
 
-  const filtered = articles
-    .filter(a => {
-      const title = a.title || "";
-      const content = a.content || "";
-      return (
-        title.toLowerCase().includes(search.toLowerCase()) ||
-        content.toLowerCase().includes(search.toLowerCase())
-      );
-    })
-    .filter(a => (aiOnly ? Boolean(a.summary) : true));
+    const filtered = articles
+      .filter(a =>
+        a.title.toLowerCase().includes(search.toLowerCase()) ||
+        a.content.toLowerCase().includes(search.toLowerCase())
+      )
+      .filter(a => (aiOnly ? a.summary : true));
 
-  if (loading) {
-    return <p className="loading">Loading articles...</p>;
-  }
+    return (
+      <div className="container">
+        <h2 className="page-title">BeyondChats Articles</h2>
 
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
-
-  return (
-    <div className="container">
-      <h2 className="page-title">BeyondChats Articles</h2>
-
-      <div className="toolbar">
-        <input
-          className="search-input"
-          placeholder="Search articles..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
-
-        <label className="checkbox">
+        <div className="toolbar">
           <input
-            type="checkbox"
-            checked={aiOnly}
-            onChange={e => setAiOnly(e.target.checked)}
+            className="search-input"
+            placeholder="Search articles..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
-          AI processed only
-        </label>
-      </div>
 
-      {filtered.length === 0 ? (
-        <p className="empty">No articles found.</p>
-      ) : (
-        filtered.map(article => (
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              checked={aiOnly}
+              onChange={e => setAiOnly(e.target.checked)}
+            />
+            AI processed only
+          </label>
+        </div>
+
+        {filtered.map(article => (
           <ArticleCard key={article.id} article={article} />
-        ))
-      )}
-    </div>
-  );
-}
+        ))}
+      </div>
+    );
+  }
