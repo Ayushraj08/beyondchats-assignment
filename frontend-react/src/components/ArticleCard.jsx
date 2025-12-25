@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 export default function ArticleCard({ article }) {
   const navigate = useNavigate();
 
-  // ✅ Normalize tags (string | array | null → array)
+  // ✅ SAFELY normalize tags
   let tags = [];
+
   if (Array.isArray(article.tags)) {
     tags = article.tags;
   } else if (typeof article.tags === "string") {
     try {
       tags = JSON.parse(article.tags);
-    } catch {
+    } catch (e) {
       tags = [];
     }
   }
