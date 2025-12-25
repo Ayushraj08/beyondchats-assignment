@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,19 +16,11 @@ class DatabaseSeeder extends Seeder
     {
         /*
         |--------------------------------------------------------------------------
-        | Default Test User (idempotent & SQLite-safe)
-        |--------------------------------------------------------------------------
-        | Prevents duplicate user creation on redeploy
-        */
-        User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            ['name' => 'Test User']
-        );
-
-        /*
-        |--------------------------------------------------------------------------
         | Articles Seeder
         |--------------------------------------------------------------------------
+        | Seed only required data for BeyondChats.
+        | Users are intentionally NOT seeded to avoid
+        | PostgreSQL NOT NULL password constraint errors.
         */
         $this->call([
             ArticleSeeder::class,
