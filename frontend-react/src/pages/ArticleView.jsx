@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchArticleBySlug } from "../api/articles";
+import { fetchArticleBySlug } from "@/api/articles.js";
 import { normalizeTags } from "@/utils/tags.js";
 
 export default function ArticleView() {

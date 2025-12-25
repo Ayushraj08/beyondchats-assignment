@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ArticleList from "./pages/ArticleList";
-import ArticleView from "./pages/ArticleView";
+import ArticleList from "@/pages/ArticleList.jsx";
+import ArticleView from "@/pages/ArticleView.jsx";
 
 export default function App() {
   return (

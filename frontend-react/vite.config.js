@@ -6,21 +6,25 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
 
-  // ✅ FIXES utils/tags resolution permanently
+  // ✅ Absolute imports (no ../ issues on Linux / CI)
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
   },
 
-  base: "/", // ✅ required for Vercel SPA routing
+  // ✅ Required so assets resolve correctly on Vercel
+  base: "/",
 
   build: {
     outDir: "dist",
+    assetsDir: "assets", // explicit (Vite default, but important for Vercel routing)
     sourcemap: false,
+    emptyOutDir: true,
   },
 
   server: {
     port: 5173,
+    open: true,
   },
 });
