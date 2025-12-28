@@ -150,6 +150,11 @@ The frontend allows reviewers to:
 > Backend APIs are deployed and actively connected to the frontend.
 
 ---
+## Screenshots
+<img width="1080" height="1171" alt="1000111375" src="https://github.com/user-attachments/assets/0800dc58-9185-400e-8d85-dabc9f72ad6c" />
+<img width="1080" height="1875" alt="1000111374" src="https://github.com/user-attachments/assets/b854cf01-13fd-4bab-8947-2bf8f21723d8" />
+
+---
 
 ## ✅ Completed Features
 
